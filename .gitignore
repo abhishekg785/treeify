@@ -1,0 +1,5 @@
+#avoid npm modules
+node_modules/
+
+#ignore build files
+build/

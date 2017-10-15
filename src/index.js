@@ -14,27 +14,34 @@ class Treeify {
 
     // get the name of the directory here
     constructor(directory) {
+
+        // maybe a relative path or an absolute path
         this.inputDir = directory;
+
+        // the path of the module in which it has been required or imported
+        this.parentDir = path.dirname(module.parent.filename);
     }
 
     /**
      * 
      */
-    readDir() {
-        let parentDir = module.parent.filename;
-        console.log(path.resolve(parentDir, this.inputDir));
+    async readDir() {
+        return await this.checkDirExistStatus();
     }
 
     /**
-     * checks whether the dir exists or not
-     * all i need is a base directory and then doing this will help:
-     * path.resolve('.', '../build') => /treeify/build where '.' is the current dir
-     * or the base directory and the '../build' is the passed directory
-     * 
-     * user might pass => 
+     * eheck for the given dir exists or not
      */
     checkDirExistStatus() {
-
+        return new Promise((res, rej) => {
+            let resolvedPath = path.resolve(this.parentDir, this.inputDir);
+            fs.stat(resolvedPath, (err, stats) => {
+                if(err && err.errno == '-2') { // error code for not exists
+                    rej(new Error('No such directory!'));
+                }
+                res(true);
+            });
+        });
     }
     
 }

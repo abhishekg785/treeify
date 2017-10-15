@@ -1,5 +1,12 @@
 const treeify = require('../build/index');
 
-const obj = new treeify.Treeify('/Users/abhishek');
+// pass the dir name
+const obj = new treeify.Treeify('../build');
 
-obj.readDir();
+obj.readDir()
+.then((data)=>{
+    console.log(data);
+})
+.catch((error)=>{
+    console.log(error);
+});

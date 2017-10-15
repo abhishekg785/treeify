@@ -1,9 +1,10 @@
 var path = require('path');
-
 module.exports = {
-    entry: [
-        path.resolve(__dirname, "src")                    
-    ],
+    context: path.resolve(__dirname, "src"),
+    entry: {
+        index: './index.js',
+        demo: './demo.js'                    
+    },
     module: {
         loaders: [
             {
@@ -19,6 +20,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, "build"),
-        filename: "index.js"
-    }
+        filename: "[name].js"
+    },
+    target: "node"
 }

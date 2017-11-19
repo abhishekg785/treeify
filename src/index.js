@@ -6,7 +6,7 @@
  */
 
 import path from 'path';
-import fs from 'fs';
+import fs, { stat } from 'fs';
 
 class Treeify {
 
@@ -22,13 +22,22 @@ class Treeify {
     this.resolvedPath = path.resolve(this.parentDir, this.inputDir);
   }
 
-  async treeify() {
+  async treeifyPromise() {
     let fileStatus = await this.checkDirExistStatus();
     if (!fileStatus) {
       throw new Error('No such directory exists!');
     }
     let genTree = this.createTree(this.resolvedPath);
     return genTree;
+  }
+
+  treeify() {
+    if(this.checkDirExistStatusSync()) {
+      return this.createTree(this.resolvedPath);
+    }
+    else {
+      throw new Error('No such directory exists!');
+    }
   }
 
   // this function create the required tree using
@@ -65,6 +74,16 @@ class Treeify {
         res(true);
       });
     });
+  }
+
+  checkDirExistStatusSync() {
+    try {
+      return fs.statSync(this.resolvedPath).isDirectory();
+    } catch(err) {
+      if(err.errno === 2) {
+        return false;
+      }
+    }
   }
 
 }

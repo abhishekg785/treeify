@@ -22,6 +22,10 @@ class Treeify {
     this.resolvedPath = path.resolve(this.parentDir, this.inputDir);
   }
 
+  /**
+   * Promisified version
+   * treeify the given dir
+   */
   async treeifyPromise() {
     let fileStatus = await this.checkDirExistStatus();
     if (!fileStatus) {
@@ -31,6 +35,10 @@ class Treeify {
     return genTree;
   }
 
+  /**
+   * Non-Promisified version
+   * treeify the given dir
+   */
   treeify() {
     if(this.checkDirExistStatusSync()) {
       return this.createTree(this.resolvedPath);
@@ -76,6 +84,9 @@ class Treeify {
     });
   }
 
+  /**
+   * checks whether the dir exists or not
+   */
   checkDirExistStatusSync() {
     try {
       return fs.statSync(this.resolvedPath).isDirectory();

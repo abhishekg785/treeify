@@ -1,0 +1,157 @@
+Treeify
+=======
+
+A node module that simply does one thing => to make the tree structure for the modules present
+in a dir.
+
+Example:
+
+Consider a dir temp,
+
+that contains files like => module1.js,  module2.js, temp1.js, temp2.js
+
+    temp/
+        |
+        ---- module1.js
+        ---- module2.js
+        ---- temp1.js
+        ---- temp2.js
+
+var treeObj = new treeify.Treeify('path to /temp dir');   // dir name can be absolute or relative path
+
+ now if module1.js file =>
+ module.exports = {
+     data1: 'something',
+     data2: 'something',
+ }
+
+treeify on the temp dir will give the tempObj object :
+{
+    module1,
+    module2,
+    temp1,
+    temp2,
+}
+
+ so, you can now simply acccess the content from the treeObj like:
+ treeObj.module1  or treeObj.module2 or treeObj.temp1 etc.
+
+or
+
+if you have a dir inside dir like :
+
+temp/
+    |
+    ----demo/
+            |
+            ----demo1.js
+            ----demo2.js
+            ----anotherDir/
+                        |
+                        ----anotherMod.js
+    |
+    ----static/
+            |
+            ----static1.js
+            ----static2.js
+            ----mod: function () {}
+
+where :
+
+demo1.js =>
+    module.exports = {
+        cont1: 'something1',
+        cont2: 'something2',
+    }
+
+demo2.js =>
+    module.exports = {
+        cont3: 'something1',
+        cont4: 'something2',
+    }
+anotherMod.js =>
+    module.exports = {
+        another: ''
+    }
+static =>
+    module.exports = {
+        static1: '',
+        static2: '',
+        mod: function() {}
+    }
+
+
+treeify on the "temp" dir will give :
+{
+    demo: {
+        cont1: '',
+        cont2: '',
+        cont3: '',
+        cont4: '',
+        anotherDir: {
+            another: '',
+        }
+    },
+    static: {
+        static1: '',
+        static2: '',
+        mod:function() {}
+    }
+}
+
+so, you can now access using :
+
+treeObj.demo.cont1
+treeObj.demo.cont2
+treeObj.demo.cont3
+treeObj.demo.cont4
+
+treeObj.demo.anotherDir.another
+
+treeObj.static.static1
+treeObj.static.static2
+treeObj.static.mod
+
+
+Similarly , you can use it for the nested dirs or modules.
+
+In a nutshell, for a particular dir, it will get all the exports (in the module) inside it and group together as per dir.
+
+
+How to Run and Build
+=====================
+
+Clone the repo and run npm install
+Now run "npm run babel" to compile code to es5
+This will create a index.js file inside 'build' dir
+
+require this 'index.js' file like :
+eg : var treeify = require('../build/index.js');  // set the path as per yours
+
+
+Now simply specify the path of the dir you want to treeify :
+let obj = new treeify.Treeify('path to your dir comes here');
+
+Now, we have two options to treeify the dir : promise and without promise
+like :
+
+let tree = obj.treeify();   // will return the created tree
+
+or
+
+let tree = obj.treeifyPromise()
+            .then((d) => {
+                // here you get the generated tree
+            })
+            .catch((err) => {
+
+            });
+
+
+Note:
+=====
+
+It still needs a lot of work :P
+I will be improving it like adding features for adding filters for the options we need in the generated object and etc.
+
+Feel free to contribute :)

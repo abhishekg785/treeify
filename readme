@@ -148,6 +148,15 @@ let tree = obj.treeifyPromise()
             });
 
 
+Interesting thing i learnt:
+The most obvious thing we do in Node.js is 'require' the 'module', Right ?????
+and this is the most common thing we neglect, i,e the 'module' object provided by Node.JS which is fascinating :)
+and has a lot of things if we dig into it.
+One such thing is module.parent, using which you can find the parent for the required module, i.e parent of the module where it is required.
+Do dig into the 'module' object in Node.JS, it's cool !
+
+
+
 Note:
 =====
 
